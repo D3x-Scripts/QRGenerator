@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <title>QR Code Generator</title>
+
+    <style>
+
+      label {
+
+        display: block;
+
+        margin-bottom: 5px;
+
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <h1>Generate a QR Code</h1>
+
+    <form>
+
+      <label for="data-input">Data:</label>
+
+      <input type="text" id="data-input" name="data-input" value="Hello world"><br><br>
+
+      
+
+      <label for="size-input">Size:</label>
+
+      <input type="number" id="size-input" name="size-input" min="100" max="1000" value="200"><br><br>
+
+      
+
+      <label for="margin-input">Margin Size:</label>
+
+      <input type="number" id="margin-input" name="margin-input" min="0" max="50" value="10"><br><br>
+
+      
+
+      <label for="foreground-color-input">Foreground Color:</label>
+
+      <input type="color" id="foreground-color-input" name="foreground-color-input" value="#000000"><br><br>
+
+      
+
+      <label for="background-color-input">Background Color:</label>
+
+      <input type="color" id="background-color-input" name="background-color-input" value="#ffffff"><br><br>
+
+      
+
+      <label for="error-correction-input">Error Correction:</label>
+
+      <select id="error-correction-input" name="error-correction-input">
+
+        <option value="L">L (Low)</option>
+
+        <option value="M">M (Medium)</option>
+
+        <option value="Q">Q (Quartile)</option>
+
+        <option value="H">H (High)</option>
+
+      </select><br><br>
+
+      
+
+      <label for="photo-format-input">Photo Format:</label>
+
+      <select id="photo-format-input" name="photo-format-input">
+
+        <option value="png">PNG</option>
+
+        <option value="jpeg">JPEG</option>
+
+      </select><br><br>
+
+      
+
+      <label for="logo-input">Logo URL:</label>
+
+      <input type="text" id="logo-input" name="logo-input"><br><br>
+
+      
+
+      <img id="qr-code" alt="QR code">
+
+      <br><br>
+
+      <a id="qr-code-link" href=""><b>Link to QR code image</b></a>
+
+      <br><br>
+
+      <button id="copy-raw-link-button">Copy Raw Link</button>
+
+    </form>
+
+    
+
+    <script>
+
+      function generateQRCode() {
+
+        var data = document.getElementById("data-input").value;
+
+        var size = document.getElementById("size-input").value;
+
+        var margin = document.getElementById("margin-input").value;
+
+        var foregroundColor = document.getElementById("foreground-color-input").value.substr(1);
+
+        var backgroundColor = document.getElementById("background-color-input").value.substr(1);
+
+        var errorCorrection = document.getElementById("error-correction-input").value;
+
+        var photoFormat = document.getElementById("photo-format-input").value;
+
+        var logoUrl = document.getElementById("logo-input").value;
+
+        var qrCode = document.getElementById("qr-code");
+
+        var qrCodeLink = document.getElementById("qr-code-link");
+
+        
+
+        var url = "https://quickchart.io/qr?text=" + encodeURIComponent(data) +
+
+                  "&width=" + size + "&height=" + size + "&margin=" + margin +
+
+"&dark=" + foregroundColor +
+
+"&light=" + backgroundColor +
+
+"&ec=" + errorCorrection;
+
+    if (logoUrl) {
+
+      url += "&centerImageUrl=" + encodeURIComponent(logoUrl);
+
+    }
+
+    
+
+    var rawLink = url + "&format=" + photoFormat;
+
+    qrCode.src = url;
+
+    qrCodeLink.href = url;
+
+    qrCodeLink.style.display = "inline";
+
+    var copyRawLinkButton = document.getElementById("copy-raw-link-button");
+
+    copyRawLinkButton.style.display = "inline";
+
+    copyRawLinkButton.onclick = function() {
+
+      var dummy = document.createElement("textarea");
+
+      document.body.appendChild(dummy);
+
+      dummy.value = rawLink;
+
+      dummy.select();
+
+      document.execCommand("copy");
+
+      document.body.removeChild(dummy);
+
+    };
+
+  }
+
+  
+
+  document.getElementById("data-input").addEventListener("change", generateQRCode);
+
+  document.getElementById("size-input").addEventListener("change", generateQRCode);
+
+  document.getElementById("margin-input").addEventListener("change", generateQRCode);
+
+  document.getElementById("foreground-color-input").addEventListener("change", generateQRCode);
+
+  document.getElementById("background-color-input").addEventListener("change", generateQRCode);
+
+  document.getElementById("error-correction-input").addEventListener("change", generateQRCode);
+
+  document.getElementById("photo-format-input").addEventListener("change", generateQRCode);
+
+  document.getElementById("logo-input").addEventListener("change", generateQRCode);
+
+  
+
+  generateQRCode();
+
+</script>
+
+</body>
+
+</html>
